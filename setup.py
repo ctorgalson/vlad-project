@@ -23,6 +23,9 @@ try:
     project_remote = sys.argv[1]
     project_directory = os.path.splitext(os.path.split(project_remote)[1])[0]
 
+    """cd"""
+    subprocess.check_call("cd ..", shell = True)
+
     """gitignore"""
     try:
         gitignore = open(".gitignore", "w")
