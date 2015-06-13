@@ -30,7 +30,7 @@ try:
     """gitignore"""
     try:
         gitignore = open(".gitignore", "w")
-        gitignore.write("{0}\nsetup.py".format(project_directory))
+        gitignore.write("{0}\nvlad-project".format(project_directory))
         gitignore.close()
     except IndexError:
         print "Unable to create .gitignore file!"
