@@ -12,10 +12,11 @@
      file."""
 
 """Modules"""
-import os, subprocess, sys
+import os, shutil, subprocess, sys
 
 """Variables"""
 vlad_remote = "git@github.com:hashbangcode/vlad.git"
+vlad_project_directory = os.path.dirname(os.path.abspath(__file__))
 
 """Build"""
 try:
@@ -52,10 +53,12 @@ try:
     print "Project setup complete. You can now manage your project (in `{0}`), configure VLAD in the root directory, and update the VLAD codebase from inside `vlad`.".format(project_directory)
     print "To get started, you should:"
     print "\n"
-    print "\t1. Remove setup.py."
-    print "\t2. Add a git remote to this repository and push."
+    print "\t1. Add a git remote to this repository and push."
     print "\t3. Read about and configure VLAD: http://vlad-docs.readthedocs.org/en/latest."
     print "\n"
+
+    """Cleanup"""
+    shutil.rmtree(vlad_project_directory)
 
 except IndexError:
     print "You must provide a repository for your project!"
