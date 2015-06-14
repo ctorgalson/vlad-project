@@ -12,20 +12,79 @@
      file."""
 
 """Modules"""
-import os, shutil, subprocess, sys
+import os, re, shutil, subprocess, sys, yaml
 
 """Variables"""
 vlad_remote = "git@github.com:hashbangcode/vlad.git"
 vlad_project_directory = os.path.dirname(os.path.abspath(__file__))
+vlad_defaults = dict(
+    webserver_hostname = 'drupal.local',
+    webserver_hostname_aliases = [
+        "www.drupal.local"
+    ],
+    boxipaddress = "192.168.100.100",
+    boxname = "vlad",
+    host_synced_folder = "./docroot",
+    dbname = []
+)
 
-"""Build"""
+"""Tools"""
+def __string_setting_input(dictionary, key, prompt_pattern):
+    return raw_input(prompt_pattern.format(key, dictionary[key])) or dictionary[key]
+
+def __list_setting_input(dictionary, key, prompt_pattern):
+    list_input = raw_input(prompt_pattern.format(key, dictionary[key]))
+    if list_input is not dictionary[key]:
+        value = re.compile(" +|, ?").split(list_input) or list_input
+    else:
+        value = dictionary[key]
+    return value
+
+"""Build."""
 try:
-    """User input"""
+    """Argument input."""
     project_remote = sys.argv[1]
     project_directory = os.path.splitext(os.path.split(project_remote)[1])[0]
 
     """cd"""
     subprocess.check_call("cd ..", shell = True)
+
+    """Further input.
+
+    We are not looping through the dict a) because the order will not be
+    respected, and b) because we want to offer advice about the expected input
+    for each different setting."""
+
+    """Set up the formats for our input prompts."""
+    string_prompt = "{0} {1}: "
+    list_prompt = "{0}: "
+
+    """webserver_hostname"""
+    print "\nPlease provide the webserver hostname for this box."
+    vlad_defaults["webserver_hostname"] = __string_setting_input(vlad_defaults, "webserver_hostname", string_prompt)
+
+    """webserver_hostname_aliases"""
+    print "\nPlease provide any hostname aliases for this box as a comma or string-separated list."
+    vlad_defaults["webserver_hostname_aliases"] = __list_setting_input(vlad_defaults, "webserver_hostname_aliases", list_prompt)
+
+    """boxipaddress"""
+    print "\nPlease provide the local IP address at which to access this box."
+    vlad_defaults["boxipaddress"] = __string_setting_input(vlad_defaults, "boxipaddress", string_prompt)
+
+    """boxname"""
+    print "\nPlease provide the box name for this server."
+    vlad_defaults["boxname"] = __string_setting_input(vlad_defaults, "boxname", string_prompt)
+
+    """host_synced_folder"""
+    print "\nPlease provide the path to the docroot of the website relative to ./vlad/vagrantfile."
+    vlad_defaults["host_synced_folder"] = __string_setting_input(vlad_defaults, "host_synced_folder", string_prompt)
+
+    """dbname"""
+    print "\nPlease provide any databases that should be created for this box as a comma or string-separated list."
+    vlad_defaults["dbname"] = __list_setting_input(vlad_defaults, "dbname", list_prompt)
+
+    with open("vlad_settings.yml", "w") as output:
+         output.write(yaml.dump(vlad_defaults, default_flow_style = False))
 
     """gitignore"""
     try:
@@ -58,7 +117,7 @@ try:
     print "\n"
 
     """Cleanup"""
-    shutil.rmtree(vlad_project_directory)
+#    shutil.rmtree(vlad_project_directory)
 
 except IndexError:
     print "You must provide a repository for your project!"
