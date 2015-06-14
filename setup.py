@@ -54,7 +54,7 @@ try:
     print "To get started, you should:"
     print "\n"
     print "\t1. Add a git remote to this repository and push."
-    print "\t3. Read about and configure VLAD: http://vlad-docs.readthedocs.org/en/latest."
+    print "\t2. Read about and configure VLAD: http://vlad-docs.readthedocs.org/en/latest."
     print "\n"
 
     """Cleanup"""
