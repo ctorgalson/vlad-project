@@ -83,8 +83,19 @@ try:
     print "\nPlease provide any databases that should be created for this box as a comma or string-separated list."
     vlad_defaults["dbname"] = __list_setting_input(vlad_defaults, "dbname", list_prompt)
 
-    with open("vlad_settings.yml", "w") as output:
-         output.write(yaml.dump(vlad_defaults, default_flow_style = False))
+    """vlad settings"""
+    try:
+        """File system variables"""
+        settings_directory = "settings"
+        settings_file = "vlad_settings.yml"
+        settings_path = os.path.join(settings_directory, settings_file)
+
+        """Make the directory and try to write the file"""
+        os.mkdir(settings_directory)
+        with open(settings_path, "w") as output:
+            output.write(yaml.dump(vlad_defaults, default_flow_style = False))
+    except IndexError:
+        print "Could not crate vlad settings file!"
 
     """gitignore"""
     try:
