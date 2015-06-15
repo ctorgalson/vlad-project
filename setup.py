@@ -25,6 +25,8 @@ vlad_defaults = dict(
     boxipaddress = "192.168.100.100",
     boxname = "vlad",
     host_synced_folder = "./docroot",
+    aux_synced_folder = "./vlad_aux",
+    synced_folder_type = "nfs",
     dbname = []
 )
 
@@ -56,31 +58,39 @@ try:
     for each different setting."""
 
     """Set up the formats for our input prompts."""
-    string_prompt = "{0} {1}: "
+    string_prompt = "{0} [{1}]: "
     list_prompt = "{0}: "
 
     """webserver_hostname"""
-    print "\nPlease provide the webserver hostname for this box."
+    print "\nThe hostname of the site you are about to create. By default this is then combined with the variable webserver_hostname_alias to add 'www' to the start (string)."
     vlad_defaults["webserver_hostname"] = __string_setting_input(vlad_defaults, "webserver_hostname", string_prompt)
 
     """webserver_hostname_aliases"""
-    print "\nPlease provide any hostname aliases for this box as a comma or string-separated list."
+    print "\nIn order to support multiple projects, or Drupal multi-site installations, this lets you add a list of fully qualified names for your web server aliases (comma or space-separated list)."
     vlad_defaults["webserver_hostname_aliases"] = __list_setting_input(vlad_defaults, "webserver_hostname_aliases", list_prompt)
 
     """boxipaddress"""
-    print "\nPlease provide the local IP address at which to access this box."
+    print "\nThe IP address of the virtual machine (string)."
     vlad_defaults["boxipaddress"] = __string_setting_input(vlad_defaults, "boxipaddress", string_prompt)
 
     """boxname"""
-    print "\nPlease provide the box name for this server."
+    print "\nThe name of the box that will be used by Vagrant to label the box inside your virtual machine manager of choice. This value should contain only letters, numbers, hyphens or dots (string)."
     vlad_defaults["boxname"] = __string_setting_input(vlad_defaults, "boxname", string_prompt)
 
     """host_synced_folder"""
-    print "\nPlease provide the path to the docroot of the website relative to ./vlad/vagrantfile."
+    print "\nThis is the directory that will be used to serve the files from. Should be located inside the repository (string)"
     vlad_defaults["host_synced_folder"] = __string_setting_input(vlad_defaults, "host_synced_folder", string_prompt)
 
+    """aux_synced_folder"""
+    print "\nThis is a secondary Vagrant synced folder used to sync files that don't belong in `host_synced_folder`. If this doesn't exist then it will be created (string)"
+    vlad_defaults["aux_synced_folder"] = __string_setting_input(vlad_defaults, "aux_synced_folder", string_prompt)
+
+    """synced_folder_type"""
+    print "\n*Only applicable for when running VLAD on a non-Windows host.* Use 'nfs' or 'rsync' for VM file editing in synced folder (string)."
+    vlad_defaults["synced_folder_type"] = __string_setting_input(vlad_defaults, "synced_folder_type", string_prompt)
+
     """dbname"""
-    print "\nPlease provide any databases that should be created for this box as a comma or string-separated list."
+    print "\nthis is a list of databases that Vlad will generate. As a default a single database is created but this value can be changed to make Vlad add more databases (comma or space-separated list)."
     vlad_defaults["dbname"] = __list_setting_input(vlad_defaults, "dbname", list_prompt)
 
     """vlad settings"""
