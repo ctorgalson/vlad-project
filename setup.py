@@ -93,6 +93,10 @@ try:
     print "\nthis is a list of databases that Vlad will generate. As a default a single database is created but this value can be changed to make Vlad add more databases (comma or space-separated list)."
     vlad_defaults["dbname"] = __list_setting_input(vlad_defaults, "dbname", list_prompt)
 
+    """db_import_up"""
+    print "Database to import at `vagrant up`. Database import won't occur if the first present database has any tables defined (in order to prevent data loss)."
+    vlad_defaults["db_import_up"] = __string_setting_input(vlad_defaults, "none", string_prompt)
+
     """vlad settings"""
     try:
         """File system variables"""
