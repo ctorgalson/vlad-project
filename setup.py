@@ -27,7 +27,8 @@ vlad_defaults = dict(
     host_synced_folder = "./docroot",
     aux_synced_folder = "./vlad_aux",
     synced_folder_type = "nfs",
-    dbname = []
+    dbname = [],
+    db_import_up = ""
 )
 
 """Tools"""
@@ -81,10 +82,6 @@ try:
     print "\nThis is the directory that will be used to serve the files from. Should be located inside the repository (string)"
     vlad_defaults["host_synced_folder"] = __string_setting_input(vlad_defaults, "host_synced_folder", string_prompt)
 
-    """aux_synced_folder"""
-    print "\nThis is a secondary Vagrant synced folder used to sync files that don't belong in `host_synced_folder`. If this doesn't exist then it will be created (string)"
-    vlad_defaults["aux_synced_folder"] = __string_setting_input(vlad_defaults, "aux_synced_folder", string_prompt)
-
     """synced_folder_type"""
     print "\n*Only applicable for when running VLAD on a non-Windows host.* Use 'nfs' or 'rsync' for VM file editing in synced folder (string)."
     vlad_defaults["synced_folder_type"] = __string_setting_input(vlad_defaults, "synced_folder_type", string_prompt)
@@ -95,7 +92,7 @@ try:
 
     """db_import_up"""
     print "Database to import at `vagrant up`. Database import won't occur if the first present database has any tables defined (in order to prevent data loss)."
-    vlad_defaults["db_import_up"] = __string_setting_input(vlad_defaults, "none", string_prompt)
+    vlad_defaults["db_import_up"] = __list_setting_input(vlad_defaults, "db_import_up", list_prompt)
 
     """vlad settings"""
     try:
@@ -106,6 +103,7 @@ try:
 
         """Make the directory and try to write the file"""
         os.mkdir(settings_directory)
+        os.mkdir(vlad_defaults["aux_synced_folder"])
         with open(settings_path, "w") as output:
             output.write(yaml.dump(vlad_defaults, default_flow_style = False))
     except IndexError:
