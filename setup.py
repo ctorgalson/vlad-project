@@ -24,10 +24,11 @@ vlad_defaults = dict(
     ],
     boxipaddress = "192.168.100.100",
     boxname = "vlad",
-    host_synced_folder = "./docroot",
-    aux_synced_folder = "./vlad_aux",
+    host_synced_folder = "../docroot",
+    aux_synced_folder = "../vlad_aux",
     synced_folder_type = "nfs",
-    dbname = []
+    dbname = [],
+    db_import_up = []
 )
 
 """Tools"""
@@ -81,10 +82,6 @@ try:
     print "\nThis is the directory that will be used to serve the files from. Should be located inside the repository (string)"
     vlad_defaults["host_synced_folder"] = __string_setting_input(vlad_defaults, "host_synced_folder", string_prompt)
 
-    """aux_synced_folder"""
-    print "\nThis is a secondary Vagrant synced folder used to sync files that don't belong in `host_synced_folder`. If this doesn't exist then it will be created (string)"
-    vlad_defaults["aux_synced_folder"] = __string_setting_input(vlad_defaults, "aux_synced_folder", string_prompt)
-
     """synced_folder_type"""
     print "\n*Only applicable for when running VLAD on a non-Windows host.* Use 'nfs' or 'rsync' for VM file editing in synced folder (string)."
     vlad_defaults["synced_folder_type"] = __string_setting_input(vlad_defaults, "synced_folder_type", string_prompt)
@@ -93,17 +90,31 @@ try:
     print "\nthis is a list of databases that Vlad will generate. As a default a single database is created but this value can be changed to make Vlad add more databases (comma or space-separated list)."
     vlad_defaults["dbname"] = __list_setting_input(vlad_defaults, "dbname", list_prompt)
 
+    """db_import_up"""
+    print "Database to import at `vagrant up`. Database import won't occur if the first present database has any tables defined (in order to prevent data loss)."
+    vlad_defaults["db_import_up"] = __list_setting_input(vlad_defaults, "db_import_up", list_prompt)
+
     """vlad settings"""
     try:
         """File system variables"""
         settings_directory = "settings"
         settings_file = "vlad_settings.yml"
         settings_path = os.path.join(settings_directory, settings_file)
+        db_io_path = os.path.join("vlad_aux", "db_io")
 
         """Make the directory and try to write the file"""
         os.mkdir(settings_directory)
+        os.makedirs(db_io_path)
         with open(settings_path, "w") as output:
             output.write(yaml.dump(vlad_defaults, default_flow_style = False))
+
+        """Copy the db dump (if any) into the right place"""
+        if len(vlad_defaults["db_import_up"]) == len(vlad_defaults["dbname"]):
+            for d in vlad_defaults["db_import_up"]:
+               shutil.copy(d, os.path.join(db_io_path, os.path.basename(d)))
+        else:
+            print "There should be a `db_import_up` value for each database in `dbname`!"
+
     except IndexError:
         print "Could not crate vlad settings file!"
 
