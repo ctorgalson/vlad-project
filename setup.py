@@ -28,7 +28,7 @@ vlad_defaults = dict(
     aux_synced_folder = "../vlad_aux",
     synced_folder_type = "nfs",
     dbname = [],
-    db_import_up = ""
+    db_import_up = []
 )
 
 """Tools"""
@@ -100,12 +100,21 @@ try:
         settings_directory = "settings"
         settings_file = "vlad_settings.yml"
         settings_path = os.path.join(settings_directory, settings_file)
+        db_io_path = os.path.join("vlad_aux", "db_io")
 
         """Make the directory and try to write the file"""
         os.mkdir(settings_directory)
-        os.mkdir(vlad_defaults["aux_synced_folder"])
+        os.makedirs(db_io_path)
         with open(settings_path, "w") as output:
             output.write(yaml.dump(vlad_defaults, default_flow_style = False))
+
+        """Copy the db dump (if any) into the right place"""
+        if len(vlad_defaults["db_import_up"]) == len(vlad_defaults["dbname"]):
+            for d in vlad_defaults["db_import_up"]:
+               shutil.copy(d, os.path.join(db_io_path, os.path.basename(d)))
+        else:
+            print "There should be a `db_import_up` value for each database in `dbname`!"
+
     except IndexError:
         print "Could not crate vlad settings file!"
 
