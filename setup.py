@@ -24,8 +24,8 @@ vlad_defaults = dict(
     ],
     boxipaddress = "192.168.100.100",
     boxname = "vlad",
-    host_synced_folder = "./docroot",
-    aux_synced_folder = "./vlad_aux",
+    host_synced_folder = "../docroot",
+    aux_synced_folder = "../vlad_aux",
     synced_folder_type = "nfs",
     dbname = [],
     db_import_up = ""
