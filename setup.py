@@ -118,6 +118,9 @@ try:
         else:
             print "There should be a `db_import_up` value for each database in `dbname`!"
 
+        """Copy the Ansible playbook (if any) into the right place"""
+        shutil.copy(os.path.join('vlad-project', vlad_defaults["vlad_custom_play_file"]), vlad_defaults["vlad_custom_play_file"])
+
     except IndexError:
         print "Could not crate vlad settings file!"
 
