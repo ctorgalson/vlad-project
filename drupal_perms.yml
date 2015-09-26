@@ -1,0 +1,12 @@
+---
+- hosts: all
+  tasks:
+  - name: Ensure sites/default directory belongs to right group.
+    file:
+      group: www-data
+      mode: 0775
+      path: /var/www/site/docroot/sites/default
+      recurse: yes
+      state: directory
+    become: true
+    become_user: root

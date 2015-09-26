@@ -28,7 +28,10 @@ vlad_defaults = dict(
     aux_synced_folder = "../vlad_aux",
     synced_folder_type = "nfs",
     dbname = [],
-    db_import_up = []
+    db_import_up = [],
+    vlad_custom_play = true,
+    vlad_custom_play_path = '../',
+    vlad_custom_play_file = drupal_perms.yml
 )
 
 """Tools"""
