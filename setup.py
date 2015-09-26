@@ -31,7 +31,7 @@ vlad_defaults = dict(
     db_import_up = [],
     vlad_custom_play = True,
     vlad_custom_play_path = '../',
-    vlad_custom_play_file = drupal_perms.yml
+    vlad_custom_play_file = 'drupal_perms.yml'
 )
 
 """Tools"""
