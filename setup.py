@@ -29,7 +29,7 @@ vlad_defaults = dict(
     synced_folder_type = "nfs",
     dbname = [],
     db_import_up = [],
-    vlad_custom_play = true,
+    vlad_custom_play = True,
     vlad_custom_play_path = '../',
     vlad_custom_play_file = drupal_perms.yml
 )
