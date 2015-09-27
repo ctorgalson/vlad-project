@@ -104,6 +104,7 @@ try:
         settings_file = "vlad_settings.yml"
         settings_path = os.path.join(settings_directory, settings_file)
         db_io_path = os.path.join("vlad_aux", "db_io")
+        ansible_file = os.path.join(vlad_project_directory, vlad_defaults["vlad_custom_play_file"])
 
         """Make the directory and try to write the file"""
         os.mkdir(settings_directory)
@@ -118,13 +119,17 @@ try:
         else:
             print "There should be a `db_import_up` value for each database in `dbname`!"
 
+        """Copy the Ansible playbook (if any) into the right place"""
+        if os.path.isfile(ansible_file):
+            shutil.copy(ansible_file, vlad_defaults["vlad_custom_play_file"])
+
     except IndexError:
         print "Could not crate vlad settings file!"
 
     """gitignore"""
     try:
         gitignore = open(".gitignore", "w")
-        gitignore.write("{0}\nvlad-project".format(project_directory))
+        gitignore.write("{0}\nvlad-project\nnode_modules".format(project_directory))
         gitignore.close()
     except IndexError:
         print "Unable to create .gitignore file!"
