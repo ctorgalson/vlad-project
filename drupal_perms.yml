@@ -5,6 +5,7 @@
     file:
       group: www-data
       mode: 0775
+      owner: www-data
       path: /var/www/site/docroot/sites/default
       recurse: yes
       state: directory
