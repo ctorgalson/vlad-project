@@ -1,0 +1,16 @@
+aux_synced_folder: ../vlad_aux
+boxipaddress: 10.0.1.36
+boxname: EXAMPLE
+db_import_up:
+- ./example_drupal.sql
+dbname:
+- example_drupal
+host_synced_folder: ../example.com/docroot
+synced_folder_type: rsync
+webserver_hostname: example.dev
+webserver_hostname_aliases:
+- www.example.dev
+- www1.example.dev
+vlad_custom_play: true
+vlad_custom_play_path: ../
+vlad_custom_play_file: drupal.yml
