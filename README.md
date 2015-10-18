@@ -111,7 +111,7 @@ The **Sample workflow** section above performs the following tasks:
   - Copies two files, `package.json` and `Gruntfile.js` into the project
     directory. The Grunt file can be used to auto-rsync the Vagrant
     synced folder in cases where a) `synced_folder_type` is set to
-    `rsync`, **and** `rsync` can't be made to work in another way. See
+    `rsync`, **and** b) `rsync` can't be made to work in another way. See
     next steps.
 
 #### **Optional**: `npm install`
