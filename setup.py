@@ -147,6 +147,11 @@ try:
     """git clone"""
     subprocess.check_call("git clone {0}".format(project_remote), shell = True)
 
+    """Find mysql root password"""
+    with open("./vlad/vlad_guts/playbooks/roles/mysql/defaults/main.yml", "r") as f:
+      mysql_role_defaults = yaml.load(f)
+      mysql_root_password = mysql_role_defaults['mysql_root_password']
+
     """Advice"""
     print "\n"
     print "Project setup complete. You can now manage your project (in `{0}`), configure VLAD in the root directory, and update the VLAD codebase from inside `vlad`.".format(project_directory)
@@ -154,6 +159,7 @@ try:
     print "\n"
     print "\t1. Add a git remote to this repository and push."
     print "\t2. Read about and configure VLAD: http://vlad-docs.readthedocs.org/en/latest."
+    print "\t3. Configure Drupal (the mysql root password is {0}).".format(mysql_root_password)
     print "\n"
 
     """Cleanup"""
