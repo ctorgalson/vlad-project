@@ -113,11 +113,13 @@ try:
             output.write(yaml.dump(vlad_defaults, default_flow_style = False))
 
         """Copy the db dump (if any) into the right place"""
-        if len(vlad_defaults["db_import_up"]) == len(vlad_defaults["dbname"]):
-            for d in vlad_defaults["db_import_up"]:
-               shutil.copy(d, os.path.join(db_io_path, os.path.basename(d)))
-        else:
-            print "There should be a `db_import_up` value for each database in `dbname`!"
+        if len(vlad_defaults["db_import_up"]) > 0:
+            if len(vlad_defaults["db_import_up"]) == len(vlad_defaults["dbname"]):
+                for d in vlad_defaults["dbname"]:
+                    if d in vlad_defaults["db_import_up"]:
+                        shutil.copy(d, os.path.join(db_io_path, os.path.basename(d)))
+            else:
+                print "There should be a `db_import_up` value for each database in `dbname`!"
 
         """Copy the Ansible playbook (if any) into the right place"""
         if os.path.isfile(ansible_file):
